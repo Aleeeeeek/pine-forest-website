@@ -571,61 +571,75 @@
       </div>
     </footer>
 
-    <script>
-      // Smooth scrolling for navigation links
+   <script>
+  // Smooth scrolling
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       const href = this.getAttribute("href");
-      // allow normal behavior for external links
       if (!href || !href.startsWith("#")) return;
-
       e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
   });
 
-  // Modal functions
-  function openModal(modalId) {
-    document.getElementById(modalId).style.display = "block";
+  // Modals
+  function openModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.style.display = "block";
     document.body.style.overflow = "hidden";
   }
 
-  function closeModal(modalId) {
-    document.getElementById(modalId).style.display = "none";
+  function closeModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.style.display = "none";
     document.body.style.overflow = "auto";
   }
 
-  // Close modal when clicking outside
-  window.onclick = function (event) {
-    if (event.target.classList.contains("modal")) {
-      event.target.style.display = "none";
+  window.onclick = (e) => {
+    if (e.target.classList?.contains("modal")) {
+      e.target.style.display = "none";
       document.body.style.overflow = "auto";
     }
   };
 
-  // Burger menu with checkbox
+  // Mobile menu
   const menuToggle = document.getElementById("menuToggle");
   const mobileMenu = document.getElementById("mobileMenu");
+  const menuLabel = document.querySelector('label[for="menuToggle"]');
 
   if (menuToggle && mobileMenu) {
     menuToggle.addEventListener("change", () => {
       mobileMenu.classList.toggle("open", menuToggle.checked);
     });
 
-    // Close menu when clicking a mobile nav link
     document.querySelectorAll(".mobile-nav a").forEach((link) => {
       link.addEventListener("click", () => {
         menuToggle.checked = false;
         mobileMenu.classList.remove("open");
       });
     });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!mobileMenu.classList.contains("open")) return;
+
+      const insideMenu = mobileMenu.contains(e.target);
+      const onToggle =
+        menuToggle.contains(e.target) ||
+        (menuLabel && menuLabel.contains(e.target));
+
+      if (!insideMenu && !onToggle) {
+        menuToggle.checked = false;
+        mobileMenu.classList.remove("open");
+      }
+    });
   }
 </script>
+
   </body>
 </html>
