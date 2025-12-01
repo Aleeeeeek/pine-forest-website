@@ -78,7 +78,7 @@
 
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu">
-      <nav class="mobile-nav">
+      <nav id="mobileMenu" class="mobile-nav">
         <a href="#home">Home</a>
         <a href="aboutus.html">About Us</a>
         <a href="#services">Services</a>
@@ -599,39 +599,40 @@
     }
   };
 
-  // Mobile menu
-  const menuToggle = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const menuLabel = document.querySelector('label[for="menuToggle"]');
+  // Mobile menu with checkbox burger
+  const menuToggle = document.getElementById("menuToggle");   // <input type="checkbox" id="menuToggle">
+  const mobileMenu = document.getElementById("mobileMenu");   // nav / div with mobile menu
+  const hamburger = document.querySelector(".hamburger");     // label.hamburger
 
-  if (menuToggle && mobileMenu) {
-    menuToggle.addEventListener("change", () => {
+  if (menuToggle && mobileMenu && hamburger) {
+    const syncMenu = () => {
       mobileMenu.classList.toggle("open", menuToggle.checked);
-    });
+    };
+
+    menuToggle.addEventListener("change", syncMenu);
 
     document.querySelectorAll(".mobile-nav a").forEach((link) => {
       link.addEventListener("click", () => {
         menuToggle.checked = false;
-        mobileMenu.classList.remove("open");
+        syncMenu();
       });
     });
 
-    // Close menu when clicking outside
     document.addEventListener("click", (e) => {
-      if (!mobileMenu.classList.contains("open")) return;
+      if (!menuToggle.checked) return;
 
       const insideMenu = mobileMenu.contains(e.target);
-      const onToggle =
-        menuToggle.contains(e.target) ||
-        (menuLabel && menuLabel.contains(e.target));
+      const onBurger = hamburger.contains(e.target);
 
-      if (!insideMenu && !onToggle) {
+      if (!insideMenu && !onBurger) {
         menuToggle.checked = false;
-        mobileMenu.classList.remove("open");
+        syncMenu();
       }
     });
   }
 </script>
+
+
 
   </body>
 </html>
